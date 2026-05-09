@@ -87,7 +87,7 @@ export default async function FlightPage({ params }) {
           <h2 className="font-bold text-xl text-blue-900 mb-2">
             Administration Zone
           </h2>
-          <FlightAdminZone flightId={flight.id} />
+          <FlightAdminZone flight={flight} />
         </div>
 
         <div className="mt-8">
