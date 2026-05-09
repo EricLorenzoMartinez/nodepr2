@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 
-export default function FlightsListClient({ initialFlights }) {
+export default function FlightsListClient({ initialFlights = [] }) {
   // State: save the actual value of the filters
   const [filterOrigin, setFilterOrigin] = useState('');
   const [filterDestination, setFilterDestination] = useState('');
@@ -58,24 +59,40 @@ export default function FlightsListClient({ initialFlights }) {
           No flights match the current filters.
         </p>
       ) : (
-        <div className="text-gray-500 text-center py-4 bg-gray-50 rounded border">
+        <div className="grid gap-4">
           {filteredFlights.map((flight) => (
-            <div key={flight.id} className="p-2 border-b last:border-0">
-              <div>
-                <span className="font-bold text-lg">
-                  {flight.origin} -`&gt` {flight.destination}
+            <Link
+              href={`/flights/${flight.id}`}
+              key={flight.id}
+              className="block hover:scale-[1.01] transition-transform"
+            >
+              <div className="p-5 border border-blue-100 rounded-lg shadow-md flex justify-between items-center bg-white cursor-pointer hover:border-blue-400">
+                <div>
+                  <span className="font-extrabold text-xl text-blue-900">
+                    {flight.origin} -&gt; {flight.destination}
+                  </span>
+                  <p className="text-sm font-medium text-slate-500 mt-1">
+                    ID: {flight.id}
+                  </p>
+                  <p
+                    suppressHydrationWarning
+                    className="text-sm font-semibold text-slate-700"
+                  >
+                    Departure:{' '}
+                    {new Date(flight.time_departure).toLocaleString()}
+                  </p>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-bold uppercase border ${
+                    flight.status === 'on_time' || flight.status === 'on-time'
+                      ? 'bg-green-100 text-green-800 border-green-300'
+                      : 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                  }`}
+                >
+                  {flight.status.replace('_', ' ').replace('-', ' ')}
                 </span>
-                <p className="text-sm text-gray-500">Code: {flight.id}</p>
-                <p className="text-sm text-gray-500">
-                  Departure: {new Date(flight.time_departure).toLocaleString()}
-                </p>
               </div>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${flight.status === 'on_time' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
-              >
-                {flight.status.replace('_', ' ')}
-              </span>
-            </div>
+            </Link>
           ))}
         </div>
       )}

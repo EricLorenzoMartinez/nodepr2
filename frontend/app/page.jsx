@@ -18,7 +18,7 @@ async function getHealth() {
 
 async function getFlights() {
   try {
-    const res = await fetch(`${API_BASE}/flights`, {
+    const res = await fetch(`${API_BASE}/api/v1/flights`, {
       next: { revalidate: 60 },
     });
 
@@ -29,6 +29,9 @@ async function getFlights() {
     if (!res.ok) {
       throw new Error('Error while fetching flights');
     }
+
+    const json = await res.json();
+    return json.data;
   } catch (error) {
     console.error('Error while fetching flights:', error);
     return [];
