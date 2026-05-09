@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const API_BASE =
   process.env.API_BASE_URL ?? // p.ej. "http://host.docker.internal:4000" si usas Docker
   'http://127.0.0.1:4000';
