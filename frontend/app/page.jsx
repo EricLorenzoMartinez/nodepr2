@@ -1,20 +1,9 @@
 import FlightsListClient from './_components/FlightsListClient';
+import Link from 'next/link';
 
 const API_BASE =
   process.env.API_BASE_URL ?? // p.ej. "http://host.docker.internal:4000" si usas Docker
   'http://127.0.0.1:4000';
-
-async function getHealth() {
-  const res = await fetch(`${API_BASE}/health`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    throw new Error('Server status could not be retrieved');
-  }
-
-  return res.json();
-}
 
 async function getFlights() {
   try {
@@ -39,22 +28,18 @@ async function getFlights() {
 }
 
 export default async function Home() {
-  const data = await getHealth();
   const flights = await getFlights();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-6">
+    <main className="flex min-h-screen flex-col items-center justify-start bg-slate-50 p-6 space-y-6">
       {/* HEALTH CHECK */}
-      <div className="max-w-md w-full bg-white shadow-md rounded-lg p-6 border border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Server status
-        </h1>
-        <div className="text-sm text-gray-700 mb-4 text-center">
-          Endpoint: <code className="font-mono text-blue-600">/health</code>
-        </div>
-        <pre className="bg-gray-900 text-green-400 text-sm p-4 rounded-lg overflow-auto">
-          {JSON.stringify(data, null, 2)}
-        </pre>
+      <div className="max-w-4xl w-full flex justify-end">
+        <Link
+          href="/status"
+          className="bg-indigo-100 text-indigo-800 font-bold px-4 py-2 rounded-lg hover:bg-indigo-200 transition border border-indigo-200"
+        >
+          Check Server Status
+        </Link>
       </div>
 
       {/* FLIGHTS */}
