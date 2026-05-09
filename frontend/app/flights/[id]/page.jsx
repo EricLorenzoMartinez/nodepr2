@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import FlightAdminZone from '../../_components/FlightAdminZone';
 
 const API_BASE =
   process.env.API_BASE_URL ?? 'http://host.docker.internal:4000/api/v1';
@@ -86,7 +87,7 @@ export default async function FlightPage({ params }) {
           <h2 className="font-bold text-xl text-blue-900 mb-2">
             Administration Zone
           </h2>
-          <p className="text-sm text-blue-700">(pending...)</p>
+          <FlightAdminZone flightId={flight.id} />
         </div>
 
         <div className="mt-8">
