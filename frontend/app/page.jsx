@@ -1,3 +1,5 @@
+import FlightsListClient from './_components/FlightsListClient';
+
 const API_BASE =
   process.env.API_BASE_URL ?? // p.ej. "http://host.docker.internal:4000" si usas Docker
   'http://127.0.0.1:4000';
@@ -55,17 +57,9 @@ export default async function Home() {
       {/* FLIGHTS */}
       <div className="max-w-4xl w-full bg-white shadow-md rounded-lg p-6 border border-gray-200">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Flights
+          Scheduled Flights
         </h2>
-        {flights.length === 0 ? (
-          <p className="text-center text-gray-500 font-medium p-4">
-            No flights registered in the system currently.
-          </p>
-        ) : (
-          <pre className="bg-gray-900 text-blue-400 text-sm p-4 rounded-lg overflow-auto">
-            {JSON.stringify(flights, null, 2)}
-          </pre>
-        )}
+        <FlightsListClient initialFlights={flights} />
       </div>
     </main>
   );
