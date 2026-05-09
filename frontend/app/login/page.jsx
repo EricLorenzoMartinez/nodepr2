@@ -33,17 +33,21 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const responseJson = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(responseJson.message || 'Login failed');
       }
 
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: {
-          user: { id: data.id, email: data.email },
-          token: data.token,
+          user: {
+            id: responseJson.data.id,
+            email: responseJson.data.email,
+            name: responseJson.data.name,
+          },
+          token: responseJson.data.token,
         },
       });
 
