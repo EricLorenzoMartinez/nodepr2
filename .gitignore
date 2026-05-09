@@ -9,3 +9,7 @@ Thumbs.db
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# Ignora archivos de entorno
+backend/.env
+frontend/.env.local
