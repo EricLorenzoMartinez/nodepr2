@@ -39,6 +39,8 @@ export const createConnection = async () => {
     await mongoose.connect(DATABASE_URL, options);
     logger.info('Connected to the DB');
 
+    await createSupportUser();
+
     mongoose.connection.on('error', (error: unknown) => {
       logError(error, 'The connection was interrupted');
       process.exit(1);
