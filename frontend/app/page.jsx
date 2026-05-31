@@ -7,9 +7,7 @@ const API_BASE =
 
 async function getFlights() {
   try {
-    const res = await fetch(`${API_BASE}/api/v1/flights`, {
-      next: { revalidate: 60 },
-    });
+    const res = await fetch(`${API_BASE}/api/v1/flights`, {});
 
     if (res.status === 404) {
       return [];
