@@ -82,7 +82,7 @@ export default function EmergingChat() {
                 key={i}
                 className={`p-2 rounded max-w-[80%] text-sm ${m.senderId === state.user._id ? 'bg-blue-100 self-end' : 'bg-gray-200 self-start'}`}
               >
-                <span className="font-bold text-xs block mb-1">
+                <span className="font-bold text-xs block mb-1 text-gray-700">
                   {m.senderName}
                 </span>
                 {m.text}

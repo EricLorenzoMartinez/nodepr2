@@ -55,7 +55,6 @@ io.on('connection', (socket) => {
   );
 
   socket.on('sendMessage', (data) => {
-    console.log('MISSATGE REBUT:', data);
     const messagePayload = {
       senderId: user._id,
       senderName: user.name,
