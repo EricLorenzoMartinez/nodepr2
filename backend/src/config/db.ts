@@ -14,10 +14,11 @@ const createSupportUser = async () => {
       email: 'support@mail.com',
     });
     if (!supportExists) {
+      const hashedPassword = await UserModel.hashPassword('support123');
       await UserModel.create({
         name: 'Support',
         email: 'support@mail.com',
-        password: 'support123',
+        password: hashedPassword,
         birthday: new Date(),
       });
       logger.info('Support user created successfully');
