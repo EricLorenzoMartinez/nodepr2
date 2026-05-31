@@ -80,9 +80,9 @@ export default function EmergingChat() {
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`p-2 rounded max-w-[80%] text-sm ${m.senderId === state.user._id ? 'bg-blue-100 self-end' : 'bg-gray-200 self-start'}`}
+                className={`p-2 rounded max-w-[80%] text-sm ${m.senderId === state.user._id ? 'bg-blue-100 self-end' : 'bg-gray-200 self-start'} text-black`}
               >
-                <span className="font-bold text-xs block mb-1 text-gray-700">
+                <span className="font-bold text-xs block mb-1">
                   {m.senderName}
                 </span>
                 {m.text}
