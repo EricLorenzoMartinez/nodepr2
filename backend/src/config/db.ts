@@ -5,6 +5,27 @@ import mongoose, { type ConnectOptions } from 'mongoose';
 import { DATABASE_URL } from './config';
 import logger from './logger';
 import { logError } from '../utils/logger.helper';
+import { UserModel } from '../models/user.model';
+import { mainModule } from 'process';
+
+const createSupportUser = async () => {
+  try {
+    const supportExists = await UserModel.findOne({
+      email: 'support@mail.com',
+    });
+    if (!supportExists) {
+      await UserModel.create({
+        name: 'Support',
+        email: 'support@mail.com',
+        password: 'support123',
+        birthday: new Date(),
+      });
+      logger.info('Support user created successfully');
+    }
+  } catch (error) {
+    logError(error, 'Error creating support user');
+  }
+};
 
 export const createConnection = async () => {
   try {
