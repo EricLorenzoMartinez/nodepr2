@@ -13,3 +13,4 @@ Thumbs.db
 # Ignora archivos de entorno
 backend/.env
 frontend/.env.local
+frontend/.pnpm-store

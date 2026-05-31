@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../_context/AuthContext';
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:4000/api/v1';
+const API_BASE = process.env.API_BASE_URL ?? 'http://host.docker.internal:4000';
 
 export default function EmergingChat() {
   const { state } = useAuth();
@@ -42,7 +41,7 @@ export default function EmergingChat() {
   const sendMessage = (e) => {
     e.preventDefault();
     if (inputText.trim() && socket) {
-      socket.emit('sendMessage', inputText);
+      socket.emit('sendMessage', { text: inputText });
       setInputText('');
     }
   };
