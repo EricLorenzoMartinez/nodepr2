@@ -77,17 +77,22 @@ export default function EmergingChat() {
                 No messages yet :(
               </p>
             )}
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={`p-2 rounded max-w-[80%] text-sm ${m.senderId === state.user._id ? 'bg-blue-100 self-end' : 'bg-gray-200 self-start'} text-black`}
-              >
-                <span className="font-bold text-xs block mb-1">
-                  {m.senderName}
-                </span>
-                {m.text}
-              </div>
-            ))}
+            {messages.map((m, i) => {
+              const myId = state.user.id || state.user._id;
+              const isMe = m.senderId === myId;
+
+              return (
+                <div
+                  key={i}
+                  className={`p-2 rounded max-w-[80%] text-sm text-black ${isMe ? 'bg-blue-100 self-end' : 'bg-gray-200 self-start'}`}
+                >
+                  <span className="font-bold text-xs block mb-1">
+                    {m.senderName}
+                  </span>
+                  {m.text}
+                </div>
+              );
+            })}
           </div>
 
           <form onSubmit={sendMessage} className="p-2 border-t flex gap-2">

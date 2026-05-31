@@ -7,6 +7,7 @@ import { app } from './app.js';
 import { PORT } from './config/config.js';
 import logger from './config/logger.js';
 import { TokenHelper } from './utils/token.helper.js';
+import { UserModel } from './models/user.model.js';
 
 const BASE_URL =
   process.env.NODE_ENV === 'production'
@@ -22,7 +23,7 @@ const io = new Server(httpServer, {
 });
 
 // Authentication middleware for socket
-io.use((socket, next) => {
+io.use(async (socket, next) => {
   const token = socket.handshake.auth.token;
   if (!token) {
     logger.warn('Socket.IO: No token provided in handshake');
@@ -30,7 +31,16 @@ io.use((socket, next) => {
   }
   try {
     const decoded = TokenHelper.verifyToken(token);
-    socket.data.user = decoded;
+
+    const user = await UserModel.findById(decoded.id);
+    if (!user) {
+      logger.warn(
+        { userId: decoded.id },
+        'Socket.IO: User not found for provided token'
+      );
+      return next(new Error('Authentication error: User not found'));
+    }
+    socket.data.user = user;
     logger.info('Socket.IO: Token verified successfully for socket connection');
     next();
   } catch (error) {
@@ -47,7 +57,7 @@ io.on('connection', (socket) => {
   const user = socket.data.user;
 
   const isSupport = user.email === 'support@mail.com';
-  const roomName = isSupport ? 'support_room' : `room_${user._id}`;
+  const roomName = isSupport ? 'support_room' : `room_${user.id}`;
 
   socket.join(roomName);
   logger.info(
@@ -56,28 +66,18 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', (data) => {
     const messagePayload = {
-      senderId: user._id,
+      senderId: user.id.toString(),
       senderName: user.name,
       text: data.text,
       timestamp: new Date(),
     };
 
     if (isSupport) {
-      io.to(`room_${data.toUserId}`).emit('receiveMessage', messagePayload);
-      io.to(roomName).emit('receiveMessage', messagePayload);
+      io.emit('receiveMessage', messagePayload);
     } else {
       io.to(roomName).emit('receiveMessage', messagePayload);
-      io.to('support_room').emit('receiveMessage', {
-        ...messagePayload,
-        fromUserId: user._id,
-      });
+      io.to('support_room').emit('receiveMessage', messagePayload);
     }
-  });
-
-  socket.on('disconnect', () => {
-    logger.info(
-      `Socket.IO: User ${user.email} disconnected from room ${roomName}`
-    );
   });
 });
 
