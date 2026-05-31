@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from './_context/AuthContext';
 import Header from './_components/Header';
+import EmergingChat from './_components/EmergingChat';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <Header />
           {children}
+          <EmergingChat />
         </AuthProvider>
       </body>
     </html>
