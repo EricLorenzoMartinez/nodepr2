@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../_context/AuthContext';
 
-const API_BASE = process.env.API_BASE_URL ?? 'http://host.docker.internal:4000';
+const API_BASE = process.env.NEXT_PUBLIC_SOCKET_URL ?? 'http://localhost:4000';
 
 export default function EmergingChat() {
   const { state } = useAuth();
